@@ -66,3 +66,28 @@ func TestRandom(t *testing.T) {
 		assert.True(t, l.Has(*item.key))
 	}
 }
+
+func TestHas(t *testing.T) {
+	l := NewRandomMap[string, int]()
+	n := 5000
+	for i := 0; i < n; i++ {
+		l.Add(fmt.Sprintf("%d", i), i)
+	}
+	for i := 0; i < n; i++ {
+		assert.True(t, l.Has(fmt.Sprintf("%d", i)))
+	}
+}
+
+func TestLen(t *testing.T) {
+	l := NewRandomMap[string, int]()
+	n := 543132
+	for i := 0; i < n; i++ {
+		l.Add(fmt.Sprintf("%d", i), i)
+	}
+	m := 3214
+	assert.Equal(t, l.Len(), n)
+	for i := 0; i < m; i++ {
+		assert.Nil(t, l.Remove(fmt.Sprintf("%d", i)))
+	}
+	assert.Equal(t, l.Len(), n-m)
+}
