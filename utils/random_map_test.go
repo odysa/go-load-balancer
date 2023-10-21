@@ -15,6 +15,7 @@ func TestAdd(t *testing.T) {
 		l.Add(fmt.Sprintf("%d", i), i)
 	}
 	assert.Equal(t, l.Len(), n)
+	assert.Equal(t, len(l.indexMap), n)
 	for i := 0; i < n; i++ {
 		assert.True(t, l.Has(fmt.Sprintf("%d", i)))
 	}
@@ -27,10 +28,12 @@ func TestRemove(t *testing.T) {
 		l.Add(fmt.Sprintf("%d", i), i)
 	}
 	assert.Equal(t, l.Len(), n)
+	assert.Equal(t, len(l.indexMap), n)
 	for i := 0; i < n; i++ {
 		assert.Nil(t, l.Remove(fmt.Sprintf("%d", i)))
 	}
 	assert.Zero(t, l.Len())
+	assert.Zero(t, len(l.indexMap))
 	for i := 0; i < n; i++ {
 		assert.False(t, l.Has(fmt.Sprintf("%d", i)))
 	}
@@ -86,6 +89,8 @@ func TestLen(t *testing.T) {
 	}
 	m := 3214
 	assert.Equal(t, l.Len(), n)
+	assert.Equal(t, l.Len(), len(l.indexMap))
+	assert.Equal(t, len(l.indexMap), len(l.items))
 	for i := 0; i < m; i++ {
 		assert.Nil(t, l.Remove(fmt.Sprintf("%d", i)))
 	}
