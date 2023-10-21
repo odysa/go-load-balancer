@@ -47,10 +47,13 @@ func (r *RandomMap[K, V]) Remove(k K) error {
 	return nil
 }
 
-func (r *RandomMap[K, V]) Random() *V {
+func (r *RandomMap[K, V]) Random() *MapItem[K, V] {
+	if r.Len() <= 0 {
+		return nil
+	}
 	l := len(r.items)
 	n := rand.Intn(l)
-	return &r.items[n].value
+	return &r.items[n]
 }
 
 func (r *RandomMap[K, V]) Has(k K) bool {

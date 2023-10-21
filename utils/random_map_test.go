@@ -51,3 +51,18 @@ func TestRemove(t *testing.T) {
 	}
 	assert.Zero(t, l.Len())
 }
+
+func TestRandom(t *testing.T) {
+	l := NewRandomMap[string, int]()
+	n := 10000
+	item := l.Random()
+	assert.Nil(t, item)
+	for i := 0; i < n; i++ {
+		l.Add(fmt.Sprintf("%d", i), i)
+	}
+
+	for i := 0; i < n; i++ {
+		item = l.Random()
+		assert.True(t, l.Has(*item.key))
+	}
+}
