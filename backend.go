@@ -16,16 +16,18 @@ type Backend struct {
 }
 
 func NewBackend(proxy string) (*Backend, error) {
-	p, err := url.Parse(proxy)
+	p, err := url.ParseRequestURI(proxy)
 	if err != nil {
 		return nil, err
 	}
-	return &Backend{
+	b := &Backend{
 		uuid:     uuid.New(),
 		proxy:    *httputil.NewSingleHostReverseProxy(p),
 		active:   atomic.Bool{},
 		proxyUrl: proxy,
-	}, nil
+	}
+	b.Activate()
+	return b, nil
 }
 
 func (b *Backend) Activate() {
@@ -34,6 +36,10 @@ func (b *Backend) Activate() {
 
 func (b *Backend) Deactivate() {
 	b.active.Store(false)
+}
+
+func (b *Backend) IsActive() bool {
+	return b.active.Load()
 }
 
 func (b *Backend) Uuid() *uuid.UUID {
